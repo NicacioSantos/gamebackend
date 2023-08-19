@@ -1,7 +1,7 @@
 package com.servissistema.game.controllers;
 
 import com.servissistema.game.dtos.GameDto;
-import com.servissistema.game.dtos.GameMinDTO;
+import com.servissistema.game.dtos.GameDtoId;
 import com.servissistema.game.entities.Game;
 import com.servissistema.game.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.OK;
+
 @RestController
 @RequestMapping(value = "/games")
 public class GameController {
@@ -18,39 +21,48 @@ public class GameController {
     private GameService gameService;
 
 
-
-
     @PostMapping
-    public ResponseEntity<Game> save(@RequestBody Game game) {
+    public ResponseEntity<GameDto> save(@RequestBody GameDto gameDto) {
 
-        Game g = gameService.save(game);
+        GameDto gameDto1 = gameService.save(gameDto);
 
-        return  new ResponseEntity<Game>(g, HttpStatus.CREATED);
+        return new ResponseEntity<GameDto>(gameDto1, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{id}")
-    public GameDto findById(@PathVariable Long id){
+    public ResponseEntity<GameDto> findById(@PathVariable Long id) {
 
-        return gameService.findById(id);
+           GameDto  gameDto1 = gameService.findById(id);
+
+        return new ResponseEntity<GameDto>(gameDto1, OK);
 
     }
+
     @GetMapping
-    public List<GameMinDTO> findall(){
+    public ResponseEntity<List<GameDtoId>> findallGames() {
 
-        return gameService.findall();
+        List<GameDtoId> gameDto = gameService.findallGame();
+
+        return new ResponseEntity<List<GameDtoId>>(gameDto, OK);
+
 
     }
+
+
     @PutMapping(value = "/{id}")
-    public Game update(@PathVariable Long id ,@RequestBody Game game) {
+    public ResponseEntity<GameDto> update(@PathVariable Long id, @RequestBody GameDto gameDto) {
 
-        return  gameService.update(id,game);
+        GameDto gameDto1 = gameService.update(id, gameDto);
+
+        return new ResponseEntity<GameDto>(gameDto1, OK);
 
     }
+
     @DeleteMapping
     public ResponseEntity<String> delete(@RequestParam Long id) {
 
         gameService.delete(id);
 
-        return  new ResponseEntity<String>("Game deletado", HttpStatus.CREATED);
+        return new ResponseEntity<String>("Game deletado", HttpStatus.CREATED);
     }
 }

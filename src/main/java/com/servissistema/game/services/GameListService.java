@@ -22,7 +22,7 @@ public class GameListService {
         return gameListRepository.save(gameList);
 
     }
-    
+
     @Transactional(readOnly = true)
     public List<GameListDTO> findall() {
 

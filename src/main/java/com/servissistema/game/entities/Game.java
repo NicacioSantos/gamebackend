@@ -1,7 +1,10 @@
 package com.servissistema.game.entities;
 
+import com.servissistema.game.dtos.GameDto;
+import com.servissistema.game.dtos.GameDtoId;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
 @Data
 @Entity
@@ -37,6 +40,18 @@ public class Game {
         this.imgUrl = imgUrl;
         this.shortDescription = shortDescription;
         this.longDescription = longDescription;
+    }
+
+    public Game(GameDto gameDto) {
+
+        BeanUtils.copyProperties(gameDto, this);
+
+    }
+
+    public Game(GameDtoId gameDtoId) {
+
+        BeanUtils.copyProperties(gameDtoId, this);
+
     }
 
 

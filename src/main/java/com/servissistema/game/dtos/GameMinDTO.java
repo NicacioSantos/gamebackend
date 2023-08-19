@@ -3,6 +3,7 @@ package com.servissistema.game.dtos;
 import com.servissistema.game.entities.Game;
 import com.servissistema.game.projections.GameMinProjection;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
 @Data
 public class GameMinDTO {
@@ -27,11 +28,8 @@ public class GameMinDTO {
     }
 
     public GameMinDTO(GameMinProjection projection) {
-        id = projection.getId();
-        title = projection.getTitle();
-        year = projection.getYear();
-        imgUrl = projection.getImgUrl();
-        shortDescription = projection.getShortDescription();
+
+        BeanUtils.copyProperties(projection,this);
     }
 
 

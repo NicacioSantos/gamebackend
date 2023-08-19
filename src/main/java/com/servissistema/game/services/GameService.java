@@ -1,6 +1,8 @@
 package com.servissistema.game.services;
 
 import com.servissistema.game.dtos.GameDto;
+import com.servissistema.game.dtos.GameDtoId;
+import com.servissistema.game.dtos.GameListDTO;
 import com.servissistema.game.dtos.GameMinDTO;
 import com.servissistema.game.entities.Game;
 import com.servissistema.game.projections.GameMinProjection;
@@ -21,11 +23,12 @@ public class GameService {
 
 
     @Transactional(readOnly = true)
-    public List<GameMinDTO> findall() {
+    public List<GameDtoId> findallGame() {
 
-        List<Game> games = gameRepository.findAll();
-        List<GameMinDTO> gameMinDTO = games.stream().map(x -> new GameMinDTO(x)).toList();
-        return gameMinDTO;
+        List<Game> gamesList = gameRepository.findAll();
+        List<GameDtoId> gameDtoIds = gamesList.stream().map(x -> new GameDtoId(x)).toList();
+
+        return gameDtoIds;
     }
 
     @Transactional(readOnly = true)
@@ -49,17 +52,21 @@ public class GameService {
     }
 
 
-    public Game save(Game game) {
+    public GameDto save(GameDto gameDto) {
 
-
-        return   gameRepository.save(game);
+        Game game = new Game(gameDto);
+        gameRepository.save(game);
+        return new GameDto(game);
     }
 
-    public Game update( Long id ,Game game) {
+    public GameDto update(Long id, GameDto gameDto) {
 
         Game game1 = gameRepository.findById(id).get();
-        BeanUtils.copyProperties(game,game1, "id");
-        return  gameRepository.save(game1);
+
+        BeanUtils.copyProperties(new Game(gameDto), game1, "id");
+        Game game = gameRepository.save(game1);
+
+        return new GameDto(game);
     }
 
     public void delete(Long id) {
